@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+<title>Web Socket</title>
+</head>
+<body>
+<div class="main">
+<button onclick="send_socket()">Send!</button>
+<button onclick="send_socket_2()">Send!</button>
+</div>
+<script type="text/javascript">
+// var socket = new WebSocket("ws://127.0.0.1:5000");
+var socket = io.connect('http://127.0.0.1:5000');
+
+for (var i = 0; i <= 100000; i++) {
+	socket = io.connect('http://127.0.0.1:5000')
+}
+
+// Event handler for new connections.
+// The callback function is invoked when a connection with the
+// server is established.
+socket.on('connect', function() {
+socket.emit('my_event', {data: 'I\'m connected!'});
+});
+// Event handler for server sent data.
+// The callback function is invoked whenever the server emits data
+// to the client. The data is then displayed in the "Received"
+// section of the page.
+socket.on('my_response', function(msg) {
+$('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+});
+
+function send_socket(argument) {
+socket.emit('message', "Hello")
+}
+function send_socket_2(argument) {
+socket.emit('do_smth', 42)
+}
+</script>
+</body>
+</html>
